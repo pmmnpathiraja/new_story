@@ -380,9 +380,9 @@ class _purchaseReceiptState extends State<purchaseReceipt> {
                               child: TextButton(
                                 onPressed: () async {
                                   double avgSambaPriceCal =
-                                      (widget.buyingData.avgSambaPrice +
+                                  ((widget.buyingData.avgSambaPrice +
                                               widget.buyingData.samba_Price) /
-                                          widget.buyingData.purchaseID;
+                                          (widget.buyingData.purchaseID-10000));
                                   await FirebaseFirestore.instance
                                       .collection('User_farmer')
                                       .doc(_firebaseUser.displayName)

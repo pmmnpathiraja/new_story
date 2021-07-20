@@ -482,10 +482,10 @@ class _userHomeState extends State<userHome> {
         .doc("Price")
         .get();
     double sambaPrice = docCurrent.data()['SambaPrice'];
-
+    double sambaPriceAVG = sambaPrice;
     int sellingID = docCurrent.data()['SellingID'];
 
-    sambaPrice =sambaPrice*purchaseID;
+    sambaPrice =sambaPrice*(purchaseID-10000);
 
     print(purchaseID);
     print(sambaStock);
