@@ -1,7 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:new_story/model/selling.dart';
 import 'package:new_story/screens/userHome.dart';
 
-class salesReceipt extends StatelessWidget {
+class salesReceipt extends StatefulWidget {
+  salesReceipt(this.sellingData, this.phoneNumber);
+  SellingData sellingData;
+  late String phoneNumber;
+  @override
+  State<StatefulWidget> createState() {
+    return _salesReceiptState();
+  }
+}
+
+class _salesReceiptState extends State<salesReceipt> {
+  final dateTime = DateTime.now();
+  User _firebaseUser = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,7 +30,7 @@ class salesReceipt extends StatelessWidget {
             padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
             child: Column(children: <Widget>[
               Container(
-                  height: 235,
+                  height: 200,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(30),
@@ -43,7 +58,7 @@ class salesReceipt extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 20, bottom: 10),
                             child: Container(
                               child: Text(
-                                "12/11/2021", //Date variable should be there
+                                "$dateTime", //Date variable should be there
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18),
                               ),
@@ -70,34 +85,7 @@ class salesReceipt extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: Container(
                               child: Text(
-                                "112354531", //Date variable should be there
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                              //margin: EdgeInsetsDirectional.only(start: 10),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 30, top: 10, bottom: 10),
-                            child: Container(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Miller ID: ",
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            child: Container(
-                              child: Text(
-                                "0012", //Date variable should be there
+                                "${widget.sellingData.sellingID}", //Date variable should be there
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18),
                               ),
@@ -124,7 +112,7 @@ class salesReceipt extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: Container(
                               child: Text(
-                                "Sahan Rice Mills", //Date variable should be there
+                                "${widget.sellingData.farmerName}", //Date variable should be there
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18),
                               ),
@@ -151,7 +139,7 @@ class salesReceipt extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: Container(
                               child: Text(
-                                "0745862148", //Date variable should be there
+                                "${widget.phoneNumber}", //Date variable should be there
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 18),
                               ),
@@ -243,7 +231,7 @@ class salesReceipt extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 10, left: 120),
                       child: Container(
                         child: Text(
-                          "11524", //Date variable should be there
+                          "${widget.sellingData.sub_total_kg}", //Date variable should be there
                           style:
                               TextStyle(color: Colors.grey[700], fontSize: 18),
                         ),
@@ -269,7 +257,7 @@ class salesReceipt extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 10, left: 125),
                       child: Container(
                         child: Text(
-                          "2600", //Date variable should be there
+                          "${widget.sellingData.samba_Price}", //Date variable should be there
                           style:
                               TextStyle(color: Colors.grey[700], fontSize: 18),
                         ),
@@ -295,7 +283,7 @@ class salesReceipt extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 10, left: 80),
                       child: Container(
                         child: Text(
-                          "215", //Date variable should be there
+                          "${widget.sellingData.sub_paddy_bags}", //Date variable should be there
                           style:
                               TextStyle(color: Colors.grey[700], fontSize: 18),
                         ),
@@ -323,7 +311,7 @@ class salesReceipt extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 10, left: 200),
                       child: Container(
                         child: Text(
-                          "150620", //Date variable should be there
+                          "${widget.sellingData.sub_total}", //Date variable should be there
                           style: TextStyle(
                               color: Colors.blue[500],
                               fontSize: 20,
@@ -351,7 +339,7 @@ class salesReceipt extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 10, left: 165),
                       child: Container(
                         child: Text(
-                          "20015", //Date variable should be there
+                          "${widget.sellingData.profitLoss}", //Date variable should be there
                           style:
                               TextStyle(color: Colors.grey[700], fontSize: 18),
                         ),
@@ -375,6 +363,103 @@ class salesReceipt extends StatelessWidget {
                     ),
                   ),
                 ),
+                Container(
+                    width: 250,
+                    decoration: BoxDecoration(
+                      color: Colors.blue[500],
+                      borderRadius: BorderRadius.circular(35),
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: TextButton(
+                        onPressed: () async {
+                          // double avgSambaPriceCal =
+                          // ((widget.buyingData.avgSambaPrice +
+                          //     widget.buyingData.samba_Price) /
+                          //     (widget.buyingData.purchaseID-10000));
+                          // await FirebaseFirestore.instance
+                          //     .collection('User_farmer')
+                          //     .doc(_firebaseUser.displayName)
+                          //     .collection("Price")
+                          //     .doc("Price")
+                          //     .update({
+                          //   'SambaPrice': avgSambaPriceCal,
+                          // });
+                          await FirebaseFirestore.instance
+                              .collection('User_farmer')
+                              .doc(_firebaseUser.displayName)
+                              .collection("ID")
+                              .doc("ID")
+                              .update({
+                            'SellingID': widget.sellingData.sellingID,
+                          });
+
+                          await FirebaseFirestore.instance
+                              .collection('User_farmer')
+                              .doc(_firebaseUser.displayName)
+                              .collection("Stock")
+                              .doc("Stock")
+                              .update({
+                            'SambaStock': widget.sellingData.stock
+                          });
+
+                          await FirebaseFirestore.instance
+                              .collection('User_farmer')
+                              .doc(_firebaseUser.displayName)
+                              .collection("Transaction_details_selling")
+                              .doc(widget.sellingData.sellingID
+                              .toString())
+                              .set({
+                            "Date": dateTime,
+                            "Purchased ID":
+                            widget.sellingData.sellingID,
+                            "Farmer Name": widget.sellingData.farmerName,
+                            "Farmer Mobile": widget.phoneNumber,
+                            "Paddy Type": "SAMBA",
+                            "Number of Kilo":
+                            widget.sellingData.sub_total_kg,
+                            "Price of 1 KG":
+                            widget.sellingData.samba_Price,
+                            "Number of paddy bags":
+                            widget.sellingData.sub_paddy_bags,
+                            "total": widget.sellingData.sub_total,
+                          });
+                          await FirebaseFirestore.instance
+                              .collection('User_farmer')
+                              .doc(_firebaseUser.displayName)
+                              .collection(
+                              "Transaction_details_by_Miller")
+                              .doc("By Miller")
+                              .collection(widget.phoneNumber)
+                              .doc(widget.sellingData.sellingID
+                              .toString())
+                              .set({
+                            "Date": dateTime,
+                            "Purchased ID":
+                            widget.sellingData.sellingID,
+                            "Farmer Name": widget.sellingData.farmerName,
+                            "Farmer Mobile": widget.phoneNumber,
+                            "Paddy Type": "SAMBA",
+                            "Number of Kilo":
+                            widget.sellingData.sub_total_kg,
+                            "Price of 1 KG":
+                            widget.sellingData.samba_Price,
+                            "Number of paddy bags":
+                            widget.sellingData.sub_paddy_bags,
+                            "total": widget.sellingData.sub_total,
+                          });
+                        },
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Conform",
+                            style: TextStyle(
+                                fontSize: 21, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    )),
+                SizedBox(height: 10,),
                 Container(
                   //margin: EdgeInsets.fromLTRB(50, 10, 30, 0),
                   child: Align(

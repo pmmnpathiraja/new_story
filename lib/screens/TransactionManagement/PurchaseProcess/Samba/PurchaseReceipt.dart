@@ -521,11 +521,11 @@ class _purchaseReceiptState extends State<purchaseReceipt> {
                                     //     },
                                     //   ),
                                     // );
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => userHome()),
-                                    );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) => userHome()),
+                                    // );
                                   },
                                   child: Align(
                                     alignment: Alignment.center,

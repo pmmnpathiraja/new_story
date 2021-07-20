@@ -1,36 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:new_story/model/selling.dart';
 import 'dart:ui';
 import 'dart:ffi';
 
 import 'package:new_story/screens/TransactionManagement/SaleProcess/Samba/BillCal.dart';
 
 class salefirst extends StatefulWidget {
+  salefirst(this.sellingId, this.sambaStock, this.sambaPriceAVG);
+  int sellingId;
+  var sambaStock;
+  double sambaPriceAVG;
+
   @override
   _salefirstState createState() => _salefirstState();
 }
 
 // ignore: camel_case_types
 class _salefirstState extends State<salefirst> {
-  TextEditingController controller1 = new TextEditingController();
-  TextEditingController controller2 = new TextEditingController();
-  TextEditingController controller3 = new TextEditingController();
-  TextEditingController controller4 = new TextEditingController();
-  TextEditingController controller5 = new TextEditingController();
-  TextEditingController controller6 = new TextEditingController();
-  TextEditingController controller7 = new TextEditingController();
-  TextEditingController controller8 = new TextEditingController();
-  TextEditingController controller9 = new TextEditingController();
-  TextEditingController controller10 = new TextEditingController();
-  TextEditingController controller11 = new TextEditingController();
-  TextEditingController controller12 = new TextEditingController();
-  TextEditingController controller13 = new TextEditingController();
-  TextEditingController controller14 = new TextEditingController();
-  TextEditingController controller15 = new TextEditingController();
-  TextEditingController controller16 = new TextEditingController();
-  TextEditingController controller17 = new TextEditingController();
-  TextEditingController controller18 = new TextEditingController();
-  TextEditingController controller19 = new TextEditingController();
-  TextEditingController controller20 = new TextEditingController();
+  SellingData sellingData = SellingData();
+  TextEditingController controller1 =  TextEditingController();
+  TextEditingController controller2 =  TextEditingController();
+  TextEditingController controller3 =  TextEditingController();
+  TextEditingController controller4 =  TextEditingController();
+  TextEditingController controller5 =  TextEditingController();
+  TextEditingController controller6 =  TextEditingController();
+  TextEditingController controller7 =  TextEditingController();
+  TextEditingController controller8 =  TextEditingController();
+  TextEditingController controller9 =  TextEditingController();
+  TextEditingController controller10 =  TextEditingController();
+  TextEditingController controller11 =  TextEditingController();
+  TextEditingController controller12 =  TextEditingController();
+  TextEditingController controller13 =  TextEditingController();
+  TextEditingController controller14 =  TextEditingController();
+  TextEditingController controller15 =  TextEditingController();
+  TextEditingController controller16 =  TextEditingController();
+  TextEditingController controller17 =  TextEditingController();
+  TextEditingController controller18 =  TextEditingController();
+  TextEditingController controller19 =  TextEditingController();
+  TextEditingController controller20 =  TextEditingController();
 
   double number_of_kilos1 = 0;
   double number_of_kilos2 = 0;
@@ -210,7 +217,7 @@ class _salefirstState extends State<salefirst> {
 
   void sub_cal() {
     setState(() {
-      if(total_paddy_bags != 0 && total_kilo != 0) {
+      if (total_paddy_bags != 0 && total_kilo != 0) {
         sub_paddy_bags = sub_paddy_bags + total_paddy_bags;
         sub_total_kg = sub_total_kg + total_kilo;
         total_paddy_bags = 0;
@@ -244,6 +251,23 @@ class _salefirstState extends State<salefirst> {
       controller20.clear();
       //total_paddy_bags.clear();
     });
+  }
+
+  void loadNextPage() {
+    sellingData.avgSambaPrice = widget.sambaPriceAVG;
+    sellingData.stock = widget.sambaStock - sub_total_kg;
+    sellingData.sub_total_kg = sub_total_kg;
+    sellingData.sub_paddy_bags = sub_paddy_bags;
+    sellingData.instance = instance;
+    sellingData.sellingID = widget.sellingId;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => sub_total_kg != 0
+              ? billCal(sellingData)
+              : salefirst(
+                  widget.sellingId, widget.sambaStock, widget.sambaPriceAVG)),
+    );
   }
 
   @override
@@ -1204,11 +1228,7 @@ class _salefirstState extends State<salefirst> {
                                 alignment: Alignment.topLeft,
                                 child: TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => billCal()),
-                                    );
+                                    loadNextPage();
                                   },
                                   child: Align(
                                     alignment: Alignment.center,

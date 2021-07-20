@@ -475,13 +475,15 @@ class _userHomeState extends State<userHome> {
         .doc("ID")
         .get();
     int purchaseID = docCurrent.data()['PurchaseID'];
+    print(purchaseID);
     DocumentSnapshot docCurrent2 = await FirebaseFirestore.instance
         .collection('User_farmer')
         .doc(_firebaseUser.displayName)
         .collection("Price")
         .doc("Price")
         .get();
-    double sambaPrice = docCurrent.data()['SambaPrice'];
+    double sambaPrice = docCurrent2.data()['SambaPrice'];
+    print(sambaPrice);
     double sambaPriceAVG = sambaPrice;
     int sellingID = docCurrent.data()['SellingID'];
 
@@ -489,7 +491,7 @@ class _userHomeState extends State<userHome> {
 
     print(purchaseID);
     print(sambaStock);
-    print(purchaseID);
+
     print(sambaPrice);
 
     sellingID = sellingID +1;
@@ -511,7 +513,7 @@ class _userHomeState extends State<userHome> {
       if (paddyType == "Samba") {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
-          return salefirst();
+          return salefirst(sellingID,sambaStock,sambaPriceAVG);
         }));
       } else if (paddyType == "Nadu") {
         //nadu

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:new_story/model/selling.dart';
 import 'dart:ui';
 
 import 'package:new_story/screens/TransactionManagement/SaleProcess/RegisterMiller.dart';
+import 'package:new_story/screens/TransactionManagement/SaleProcess/RegisterMillerValidation.dart';
 
 class billCal extends StatefulWidget {
+  billCal(this.sellingData);
+  SellingData sellingData;
   @override
   _billCalState createState() => _billCalState();
 }
@@ -40,14 +44,25 @@ class _billCalState extends State<billCal> {
 
   void get_sub_total() {
     setState(() {
-      sub_total = quantity * unit_price;
+      sub_total = widget.sellingData.sub_total_kg * unit_price;
     });
   }
 
   void profit_cal() {
     setState(() {
-      profit = (unit_price - stock_price) * quantity;
+      profit = (unit_price - widget.sellingData.avgSambaPrice) * widget.sellingData.sub_total_kg;
     });
+  }
+
+  void loadNextPage(){
+    widget.sellingData.sub_total = sub_total;
+    widget.sellingData.samba_Price = unit_price;
+    widget.sellingData.profitLoss = profit;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => RegisterMillerValidation(widget.sellingData)),
+    );
   }
 
   @override
@@ -196,7 +211,7 @@ class _billCalState extends State<billCal> {
                       Padding(
                         padding: const EdgeInsets.only(top: 38.0, left: 38),
                         child: Text(
-                          quantity
+                          widget.sellingData.sub_total_kg
                               .toString(), //This should be the toral comes from previous page
                           style:
                               TextStyle(fontSize: 20, color: Colors.grey[800]),
@@ -330,11 +345,7 @@ class _billCalState extends State<billCal> {
                           alignment: Alignment.topLeft,
                           child: TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => registerMiller()),
-                              );
+                              loadNextPage();
                             },
                             child: Align(
                               alignment: Alignment.center,
