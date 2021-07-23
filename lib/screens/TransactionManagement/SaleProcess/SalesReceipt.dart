@@ -423,6 +423,7 @@ class _salesReceiptState extends State<salesReceipt> {
                             "Number of paddy bags":
                             widget.sellingData.sub_paddy_bags,
                             "total": widget.sellingData.sub_total,
+                            "profit" :widget.sellingData.profitLoss,
                           });
                           await FirebaseFirestore.instance
                               .collection('User_farmer')
@@ -447,6 +448,7 @@ class _salesReceiptState extends State<salesReceipt> {
                             "Number of paddy bags":
                             widget.sellingData.sub_paddy_bags,
                             "total": widget.sellingData.sub_total,
+                            "profit" :widget.sellingData.profitLoss,
                           });
                         },
                         child: Align(

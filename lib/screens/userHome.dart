@@ -359,11 +359,16 @@ class _userHomeState extends State<userHome> {
                             width: 148,
                             child: ElevatedButton.icon(
                               onPressed: () {
+                                final dateTime = DateTime.now();
+                                DateTime needDate = dateTime.subtract(Duration(hours: dateTime.hour));
+                                print(dateTime);
+                                // print(dateTime.hour);
+                                print(needDate);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          historyTransaction()),
+                                          historyTransaction(needDate)),
                                 );
                               },
                               icon: Icon(Icons.history, size: 24),
@@ -496,7 +501,12 @@ class _userHomeState extends State<userHome> {
 
     sellingID = sellingID +1;
     purchaseID = purchaseID+1;
-
+    // final dateTime = DateTime.now();
+    // int hour = dateTime.hour;
+    // DateTime fiftyDaysAgo = dateTime.subtract(Duration(hours: hour));
+    // print(dateTime);
+    // print(dateTime.hour);
+    // print(fiftyDaysAgo);
 
     if (selectedType == "Purchase") {
       if (paddyType == "Samba") {

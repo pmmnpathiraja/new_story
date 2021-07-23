@@ -1,8 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class purchaseHistory extends StatelessWidget {
+class purchaseHistory extends StatefulWidget {
+  purchaseHistory(this.needDate);
+  DateTime needDate;
+  @override
+  _purchaseHistoryState createState() => _purchaseHistoryState();
+}
+
+class _purchaseHistoryState extends State<purchaseHistory> {
+  void loadData(){
+    FirebaseFirestore.instance
+        .collection('users')
+        .orderBy('age')
+        .orderBy('company')
+        .startAt([4, 'Alphabet Inc.'])
+        .endAt([21, 'Google LLC'])
+        .get();
+    final dateTime = DateTime.now();
+    // needDate = dateTime.subtract(const Duration(days: 7));
+    //
+    // print(dateTime);
+    // print(needDate);
+  }
   @override
   Widget build(BuildContext context) {
+    print("awaaaaaaaaaaaaaaaaaaa");
+    print(widget.needDate);
     // return SafeArea(
     //   child: Column(mainAxisSize: MainAxisSize.min, children: [
     //     Padding(

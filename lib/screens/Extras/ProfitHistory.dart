@@ -1,6 +1,28 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class profitHistory extends StatelessWidget {
+class profitHistory extends StatefulWidget {
+  profitHistory(this.needDate);
+  DateTime needDate;
+  @override
+  _profitHistoryState createState() => _profitHistoryState();
+}
+
+class _profitHistoryState extends State<profitHistory> {
+  void loadData(){
+    FirebaseFirestore.instance
+        .collection('users')
+        .orderBy('age')
+        .orderBy('company')
+        .startAt([4, 'Alphabet Inc.'])
+        .endAt([21, 'Google LLC'])
+        .get();
+    // final dateTime = DateTime.now();
+    // needDate = dateTime.subtract(const Duration(days: 7));
+    //
+    // print(dateTime);
+    // print(needDate);
+  }
   @override
   Widget build(BuildContext context) {
     // return SafeArea(
