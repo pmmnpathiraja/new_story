@@ -199,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
       validator: (var value) {
         if(value!.isNotEmpty) {
-          if (!isAlpha(_textController.text)) {
+          if (!isAlpha(_textController.text) && !contains(_textController.text,'') ) {
             return 'Please ! fill this using only letters';
           }
           return null;
@@ -345,6 +345,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _register() async {
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")  ;
     try {
       UserCredential authResult = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
@@ -401,9 +402,19 @@ class _RegisterPageState extends State<RegisterPage> {
           .doc(_nationalIDNumberController.text)
           .collection("Stock")
           .doc("Stock").set({
-        'SambaStock': 0,
-        'NaduStock': 0,
-        'KeeriStock': 0,
+        'SambaStock': 0.0,
+        'NaduStock': 0.0,
+        'KeeriStock': 0.0,
+      });
+      FirebaseFirestore.instance
+          .collection('User_farmer')
+          .doc(_nationalIDNumberController.text)
+          .collection("Price")
+          .doc("Price")
+          .set({
+        'SambaPrice': 0.0,
+        'NaduPrice': 0.0,
+        'KeeriPrice': 0.0,
       });
     });
   }

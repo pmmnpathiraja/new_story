@@ -412,7 +412,7 @@ class _purchaseReceiptState extends State<purchaseReceipt> {
                                   await FirebaseFirestore.instance
                                       .collection('User_farmer')
                                       .doc(_firebaseUser.displayName)
-                                      .collection("Transaction_details")
+                                      .collection("Transaction_details_farmer")
                                       .doc(widget.buyingData.purchaseID
                                           .toString())
                                       .set({

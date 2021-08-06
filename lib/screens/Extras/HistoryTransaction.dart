@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:new_story/screens/Extras/PurchaseHistory.dart';
+import 'package:new_story/screens/userHome.dart';
 
 import 'ProfitHistory.dart';
 import 'SalesHistory.dart';
@@ -88,7 +89,6 @@ class _historyTransactionState extends State<historyTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    //print("000000000000000000000000000000000000000000000000");
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: DefaultTabController(
@@ -97,7 +97,10 @@ class _historyTransactionState extends State<historyTransaction> {
             appBar: AppBar(
               leading: IconButton(
                 icon: Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () =>           Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) {
+                  return userHome();
+                })),
               ),
               centerTitle: true,
               title: Text('Transaction History'),

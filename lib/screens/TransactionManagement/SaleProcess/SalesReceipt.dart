@@ -406,7 +406,7 @@ class _salesReceiptState extends State<salesReceipt> {
                           await FirebaseFirestore.instance
                               .collection('User_farmer')
                               .doc(_firebaseUser.displayName)
-                              .collection("Transaction_details_selling")
+                              .collection("Transaction_details_Miller")
                               .doc(widget.sellingData.sellingID
                               .toString())
                               .set({
