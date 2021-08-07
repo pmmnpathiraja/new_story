@@ -360,7 +360,7 @@ class _userHomeState extends State<userHome> {
                             child: ElevatedButton.icon(
                               onPressed: () {
                                 final dateTime = DateTime.now();
-                                DateTime needDate = dateTime.subtract(Duration(hours: dateTime.hour));
+                                DateTime needDate = dateTime.subtract(Duration(days: 365));
                                 print(dateTime);
                                 // print(dateTime.hour);
                                 print(needDate);
@@ -401,13 +401,7 @@ class _userHomeState extends State<userHome> {
                             height: 60,
                             width: 148,
                             child: ElevatedButton.icon(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => stock()),
-                                );
-                              },
+                              onPressed: () =>stockPage(),
                               icon: Icon(Icons.store, size: 24),
                               label: Text("STOCK"),
                             ),
@@ -531,5 +525,22 @@ class _userHomeState extends State<userHome> {
         //keeri
       }
     }
+  }
+  Future<void> stockPage()async {
+    DocumentSnapshot docCurrent1 = await FirebaseFirestore.instance
+        .collection('User_farmer')
+        .doc(_firebaseUser.displayName)
+        .collection("Stock")
+        .doc("Stock").get();
+    DocumentSnapshot docCurrent2 = await FirebaseFirestore.instance
+        .collection('User_farmer')
+        .doc(_firebaseUser.displayName)
+        .collection("Price")
+        .doc("Price")
+        .get();
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return stock(docCurrent1,docCurrent2);
+    }));
   }
 }

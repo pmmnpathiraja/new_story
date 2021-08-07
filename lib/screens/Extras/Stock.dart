@@ -1,14 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class stock extends StatefulWidget {
+  stock(this.stockData, this.priceData);
+  DocumentSnapshot stockData;
+  DocumentSnapshot priceData;
   @override
   _stockState createState() => _stockState();
 }
 
 class _stockState extends State<stock> {
-  var _stockType = ['SAMBA', 'NADU', 'KEERI'];
-  var _currentStockType = 'SAMBA';
-
+  var _stockType = ['Samba', 'Nadu', 'Keeri'];
+  var _currentStockType = 'Samba';
+  User _firebaseUser = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +79,7 @@ class _stockState extends State<stock> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "54.21",
+                        "${widget.priceData[_currentStockType + 'Price']}",
                         style: TextStyle(
                             fontSize: 30,
                             color: Colors.white,
@@ -94,7 +99,7 @@ class _stockState extends State<stock> {
                     child: Container(
                       alignment: Alignment.center,
                       child: Text(
-                        "15214",
+                        "${widget.stockData[_currentStockType + 'Stock']}",
                         style: TextStyle(
                             fontSize: 30,
                             color: Colors.white,
@@ -142,102 +147,111 @@ class _stockState extends State<stock> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Container(
-            child: DataTable(
-              columnSpacing: 8,
-              horizontalMargin: 10,
-              columns: const <DataColumn>[
-                DataColumn(
-                  label: Text(
-                    'Date',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
+            padding: const EdgeInsets.all(2.0),
+            child: SingleChildScrollView(
+              child: Container(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('User_farmer')
+                      .doc(_firebaseUser.displayName)
+                      .collection("Transaction_details_farmer").where("Paddy Type", isEqualTo: _currentStockType)
+                      .orderBy('Date')
+                      .startAt([
+                    DateTime.now().subtract(Duration(days: 190))
+                  ]).endAt([DateTime.now()]).snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.hasError)
+                      return Text('Error: ${snapshot.error}');
+                    if (!snapshot.hasData)
+                      return Container(
+                          child: Center(
+                              child: Text(
+                        'No Profit History from ${DateTime.now().toString().split(" ")[0]}',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )));
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        return Text('Loading...');
+                      default:
+                        return snapshot.data!.docs.isEmpty
+                            ? Container(
+                                child: Center(
+                                    child: Text(
+                                'No Profit History from ${DateTime.now().toString().split(" ")[0]}',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )))
+                            : DataTable(
+                                columnSpacing: 10,
+                                horizontalMargin: 10,
+                                columns: const <DataColumn>[
+                                  DataColumn(
+                                    label: Text(
+                                      'Date',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      "Miller",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      "P Type",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      'Quantity',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      'Profit',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ],
+                                rows: snapshot.data!.docs
+                                    .map // Loops through dataColumnText, each iteration assigning the value to element
+                                    (
+                                      ((element) => DataRow(
+                                            cells: <DataCell>[
+                                              DataCell(Text(element['Date']
+                                                      .toDate()
+                                                      .toString()
+                                                      .split(" ")[
+                                                  0])), //Extracting from Map element the value
+                                              DataCell(Text(
+                                                  element['Farmer Name']
+                                                      .toString())),
+                                              DataCell(Text(
+                                                  element['Paddy Type']
+                                                      .toString())),
+                                              DataCell(Text(
+                                                  element['Number of Kilo']
+                                                      .toString())),
+                                              DataCell(Text(element['total']
+                                                  .toString())),
+                                            ],
+                                          )),
+                                    )
+                                    .toList(),
+                              );
+                    }
+                  },
                 ),
-                DataColumn(
-                  label: Text(
-                    "Farmer",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    "P Type",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Quantity',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'Value',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-              rows: const <DataRow>[
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('2021.05.23')),
-                    DataCell(Text('Somapala')),
-                    DataCell(Text('Samba')),
-                    DataCell(Text('152')),
-                    DataCell(Text('14522')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('2021.05.23')),
-                    DataCell(Text('Perera R.P')),
-                    DataCell(Text('Samba')),
-                    DataCell(Text('152')),
-                    DataCell(Text('14522')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('2021.05.23')),
-                    DataCell(Text('KiriBanda')),
-                    DataCell(Text('Nadu')),
-                    DataCell(Text('152')),
-                    DataCell(Text('14522')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('2021.05.23')),
-                    DataCell(Text('KiriBanda')),
-                    DataCell(Text('Samba')),
-                    DataCell(Text('152')),
-                    DataCell(Text('14522')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('2021.05.23')),
-                    DataCell(Text('KiriBanda')),
-                    DataCell(Text('Nadu')),
-                    DataCell(Text('152')),
-                    DataCell(Text('14522')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('2021.05.23')),
-                    DataCell(Text('KiriBanda')),
-                    DataCell(Text('Samba')),
-                    DataCell(Text('152')),
-                    DataCell(Text('14522')),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        )
+              ),
+            ))
       ]),
     );
   }

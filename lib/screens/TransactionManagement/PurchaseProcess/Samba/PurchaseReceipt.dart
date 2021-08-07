@@ -421,7 +421,7 @@ class _purchaseReceiptState extends State<purchaseReceipt> {
                                         widget.buyingData.purchaseID,
                                     "Farmer Name": widget.buyingData.farmerName,
                                     "Farmer Mobile": widget.phoneNumber,
-                                    "Paddy Type": "SAMBA",
+                                    "Paddy Type": "Samba",
                                     "Number of Kilo":
                                         widget.buyingData.sub_total_kg,
                                     "Price of 1 KG":
@@ -445,7 +445,7 @@ class _purchaseReceiptState extends State<purchaseReceipt> {
                                         widget.buyingData.purchaseID,
                                     "Farmer Name": widget.buyingData.farmerName,
                                     "Farmer Mobile": widget.phoneNumber,
-                                    "Paddy Type": "SAMBA",
+                                    "Paddy Type": "Samba",
                                     "Number of Kilo":
                                         widget.buyingData.sub_total_kg,
                                     "Price of 1 KG":
